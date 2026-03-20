@@ -60,8 +60,6 @@ COPY raw_logs(log_line)
 FROM '/tmp/auth_logs.txt';
 ```
 
-<img width="976" height="129" alt="image" src="https://github.com/user-attachments/assets/84ecc5ff-47d2-4304-bffe-3fc0ad382ab6" />
-
 Resultado: milhares de linhas de logs reais inseridas na tabela
 
 <img width="1087" height="264" alt="image" src="https://github.com/user-attachments/assets/c67526cd-d322-4e39-8f20-e737db1e5fbe" />
