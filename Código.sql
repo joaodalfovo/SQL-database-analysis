@@ -27,6 +27,13 @@ WHERE log_line ILIKE '%failed password%'
 GROUP BY ip
 ORDER BY tentativas DESC;
 
+-- identificar eventos de limite de autenticação excedido
+SELECT 
+    (regexp_matches(log_line, 'authentication attempts exceeded for root from ([0-9\.]+)'))[1] AS ip_atacante,
+    COUNT(*) AS quantidade
+FROM raw_logs
+GROUP BY ip_atacante
+ORDER BY quantidade DESC;
 
 -- tabela estruturada
 CREATE TABLE logs (
