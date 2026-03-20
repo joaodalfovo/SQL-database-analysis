@@ -88,8 +88,3 @@ GROUP BY usuario;
 SELECT timestamp, COUNT(*)
 FROM logs
 GROUP BY timestamp;
-
-
--- limpeza opcional
--- TRUNCATE raw_logs;
--- TRUNCATE logs;
