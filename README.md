@@ -52,12 +52,16 @@ Os logs foram coletados diretamente do sistema utilizando:
 
 sudo journalctl -u ssh > /tmp/auth_logs.txt
 
+<img width="1079" height="224" alt="image" src="https://github.com/user-attachments/assets/99386216-7e90-4930-823c-269b62c0dd90" />
+
 📌 Importação para o banco
 ```
 COPY raw_logs(log_line)
 FROM '/tmp/auth_logs.txt';
 ```
 Resultado: milhares de linhas de logs reais inseridas na tabela
+
+<img width="1087" height="264" alt="image" src="https://github.com/user-attachments/assets/c67526cd-d322-4e39-8f20-e737db1e5fbe" />
 
 ## 🧱 Estruturação dos Dados
 
