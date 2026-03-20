@@ -165,12 +165,8 @@ Tentativas falhas -	2400+
 Bloqueios (limite excedido) -	401
 Comportamento	Automatizado
 
-🛡️ Mitigação (simulada)
 
-Exemplo de ação defensiva:
-
-sudo iptables -A INPUT -s 192.168.56.129 -j DROP
-🧠 Habilidades Demonstradas
+## 🧠 Habilidades Demonstradas
 
 Ingestão de logs com SQL
 
@@ -184,7 +180,7 @@ Análise temporal
 
 Investigação de incidentes
 
-💬 Conclusão
+## 💬 Conclusão
 
 Este projeto demonstra como é possível utilizar apenas SQL para:
 
