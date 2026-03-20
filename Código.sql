@@ -27,6 +27,15 @@ WHERE log_line ILIKE '%failed password%'
 GROUP BY ip
 ORDER BY tentativas DESC;
 
+-- tentativas por usuário
+SELECT 
+    (regexp_matches(log_line, 'for (?:invalid user )?(\w+)'))[1] AS usuario,
+    COUNT(*) AS tentativas
+FROM raw_logs
+WHERE log_line ILIKE '%failed password%'
+GROUP BY usuario
+ORDER BY tentativas DESC;
+
 -- identificar eventos de limite de autenticação excedido
 SELECT 
     (regexp_matches(log_line, 'authentication attempts exceeded for root from ([0-9\.]+)'))[1] AS ip_atacante,
@@ -34,6 +43,11 @@ SELECT
 FROM raw_logs
 GROUP BY ip_atacante
 ORDER BY quantidade DESC;
+
+-- análise temporal (eventos por segundo)
+SELECT timestamp
+FROM logs
+LIMIT 20;
 
 -- tabela estruturada
 CREATE TABLE logs (
@@ -58,55 +72,6 @@ SELECT
 FROM raw_logs
 WHERE log_line ILIKE '%ssh%';
 
-
--- tentativas de login por IP
-SELECT 
-    (regexp_matches(log_line, 'from ([0-9\.]+)'))[1] AS ip,
-    COUNT(*) AS tentativas
-FROM raw_logs
-WHERE log_line ILIKE '%failed password%'
-GROUP BY ip
-ORDER BY tentativas DESC;
-
-
--- tentativas por usuário
-SELECT 
-    (regexp_matches(log_line, 'for (?:invalid user )?(\w+)'))[1] AS usuario,
-    COUNT(*) AS tentativas
-FROM raw_logs
-WHERE log_line ILIKE '%failed password%'
-GROUP BY usuario
-ORDER BY tentativas DESC;
-
-
--- análise temporal (eventos por segundo)
-SELECT 
-    substring(log_line FROM '^[A-Za-z]{3}\s+\d{1,2}\s+\d{2}:\d{2}:\d{2}') AS tempo,
-    COUNT(*) AS eventos
-FROM raw_logs
-WHERE log_line ILIKE '%192.168.56.129%'
-GROUP BY tempo
-ORDER BY eventos DESC;
-
-
--- eventos de limite de autenticação excedido
-SELECT 
-    (regexp_matches(log_line, 'authentication attempts exceeded for root from ([0-9\.]+)'))[1] AS ip,
-    COUNT(*) AS ocorrencias
-FROM raw_logs
-WHERE log_line ILIKE '%authentication attempts exceeded%'
-GROUP BY ip;
-
-
--- visão combinada (usuário + IP)
-SELECT 
-    (regexp_matches(log_line, 'for (?:invalid user )?(\w+)'))[1] AS usuario,
-    (regexp_matches(log_line, 'from ([0-9\.]+)'))[1] AS ip,
-    COUNT(*) AS tentativas
-FROM raw_logs
-WHERE log_line ILIKE '%failed password%'
-GROUP BY usuario, ip
-ORDER BY tentativas DESC;
 
 
 -- consultas usando a tabela estruturada
