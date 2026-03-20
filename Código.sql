@@ -18,6 +18,15 @@ CREATE TABLE raw_logs (
 COPY raw_logs(log_line)
 FROM '/tmp/auth_logs.txt';
 
+-- SELECT para testar coleta de dados do raw_logs
+SELECT 
+    (regexp_matches(log_line, 'from ([0-9\.]+)'))[1] AS ip,
+    COUNT(*) AS tentativas
+FROM raw_logs
+WHERE log_line ILIKE '%failed password%'
+GROUP BY ip
+ORDER BY tentativas DESC;
+
 
 -- tabela estruturada
 CREATE TABLE logs (
