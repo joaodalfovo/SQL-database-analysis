@@ -71,17 +71,12 @@ Antes de estruturar os dados, foi realizada uma análise direta na tabela raw_lo
 Foram utilizadas consultas com LIKE e regex para filtrar eventos específicos, como falhas de autenticação e origem dos acessos.
 
 Exemplo de identificação de tentativas de login por IP:
-```
-SELECT 
-    (regexp_matches(log_line, 'from ([0-9\.]+)'))[1] AS ip,
-    COUNT(*) AS tentativas
-FROM raw_logs
-WHERE log_line ILIKE '%failed password%'
-GROUP BY ip
-ORDER BY tentativas DESC;
-```
 
 <img width="628" height="223" alt="image" src="https://github.com/user-attachments/assets/531c4c5b-7452-4840-82aa-5dbd88d2e55f" />
+
+Além disso, foi possível identificar eventos onde o sistema bloqueou tentativas excessivas de autenticação:
+
+<img width="1018" height="200" alt="image" src="https://github.com/user-attachments/assets/7468e151-6878-471f-93ce-fa2ec4c83430" />
 
 Essa análise permitiu identificar rapidamente comportamentos suspeitos, como múltiplas tentativas de autenticação originadas do mesmo endereço IP.
 
