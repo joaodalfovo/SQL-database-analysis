@@ -9,12 +9,6 @@ O projeto utiliza SQL com expressões regulares (regex) para extrair, estruturar
 
 ## 🧠 Arquitetura do Lab
 ```
-Máquina de Ataque (Kali Linux)
-        ↓
-Tentativas de acesso
-        ↓
-VM Linux (alvo)
-        ↓
 Logs do sistema (journalctl)
         ↓
 PostgreSQL (security_lab)
