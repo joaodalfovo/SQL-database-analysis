@@ -52,17 +52,38 @@ Os logs foram coletados diretamente do sistema utilizando:
 
 sudo journalctl -u ssh > /tmp/auth_logs.txt
 
-<img width="1079" height="224" alt="image" src="https://github.com/user-attachments/assets/99386216-7e90-4930-823c-269b62c0dd90" />
-
 📌 Importação para o banco
 ```
 COPY raw_logs(log_line)
 FROM '/tmp/auth_logs.txt';
 ```
 
+<img width="1292" height="451" alt="image" src="https://github.com/user-attachments/assets/0c566264-562c-4791-90fa-05477feca9c2" />
+
 Resultado: milhares de linhas de logs reais inseridas na tabela
 
 <img width="1087" height="264" alt="image" src="https://github.com/user-attachments/assets/c67526cd-d322-4e39-8f20-e737db1e5fbe" />
+
+## 🔍 Exploração inicial dos logs brutos
+
+Antes de estruturar os dados, foi realizada uma análise direta na tabela raw_logs para entender o conteúdo dos logs e identificar padrões relevantes.
+
+Foram utilizadas consultas com LIKE e regex para filtrar eventos específicos, como falhas de autenticação e origem dos acessos.
+
+Exemplo de identificação de tentativas de login por IP:
+```
+SELECT 
+    (regexp_matches(log_line, 'from ([0-9\.]+)'))[1] AS ip,
+    COUNT(*) AS tentativas
+FROM raw_logs
+WHERE log_line ILIKE '%failed password%'
+GROUP BY ip
+ORDER BY tentativas DESC;
+```
+
+<img width="628" height="223" alt="image" src="https://github.com/user-attachments/assets/531c4c5b-7452-4840-82aa-5dbd88d2e55f" />
+
+Essa análise permitiu identificar rapidamente comportamentos suspeitos, como múltiplas tentativas de autenticação originadas do mesmo endereço IP.
 
 ## 🧱 Estruturação dos Dados
 
