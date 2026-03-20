@@ -76,7 +76,7 @@ Exemplo de identificação de tentativas de login por IP:
 
 Além disso, foi possível identificar eventos onde o sistema bloqueou tentativas excessivas de autenticação:
 
-<img width="1018" height="200" alt="image" src="https://github.com/user-attachments/assets/7468e151-6878-471f-93ce-fa2ec4c83430" />
+<img width="945" height="169" alt="image" src="https://github.com/user-attachments/assets/a23c7d98-9fdb-4762-b7eb-b58dcaa26db4" />
 
 Essa análise permitiu identificar rapidamente comportamentos suspeitos, como múltiplas tentativas de autenticação originadas do mesmo endereço IP.
 
@@ -122,6 +122,8 @@ ORDER BY tentativas DESC;
 
 192.168.56.129 → mais de 2400 tentativas
 
+<img width="611" height="259" alt="image" src="https://github.com/user-attachments/assets/5e24e596-7971-4ca3-9bad-faf0bbfd9671" />
+
 Indício claro de comportamento automatizado
 
 ## 👤 Análise por usuário
@@ -136,34 +138,26 @@ ORDER BY tentativas DESC;
 
 root → alvo principal
 
+<img width="210" height="106" alt="image" src="https://github.com/user-attachments/assets/2787c870-7c2b-4f4c-ba03-d841696e456f" />
+
 fakeuser → tentativa de enumeração de usuários
 
 ## ⏱️ Análise temporal
 ```
-SELECT timestamp, COUNT(*) AS eventos
+SELECT timestamp
 FROM logs
-GROUP BY timestamp
-ORDER BY eventos DESC;
+LIMIT 20;
 ```
 
 ## 📊 Insight
 
 Múltiplos eventos no mesmo segundo
 
+<img width="276" height="453" alt="image" src="https://github.com/user-attachments/assets/ee5867d4-047b-428e-8234-3fad6e17a4cd" />
+
 Alta frequência de tentativas
 
 👉 Evidência de ataque automatizado
-
-🚨 Detecção de excesso de tentativas de autenticação
-SELECT 
-    (regexp_matches(log_line, 'authentication attempts exceeded for root from ([0-9\.]+)'))[1] AS ip,
-    COUNT(*) AS ocorrencias
-FROM raw_logs
-WHERE log_line ILIKE '%authentication attempts exceeded%'
-GROUP BY ip;
-📊 Resultado
-
-192.168.56.129 → 401 ocorrências
 
 ## 🔗 Correlação de Eventos
 
