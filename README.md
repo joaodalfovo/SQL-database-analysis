@@ -46,6 +46,7 @@ Os logs foram coletados diretamente do sistema utilizando:
 
 sudo journalctl -u ssh > /tmp/auth_logs.txt
 
+📌 Importação para o banco
 ```
 COPY raw_logs(log_line)
 FROM '/tmp/auth_logs.txt';
